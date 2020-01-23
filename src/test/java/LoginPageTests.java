@@ -1,7 +1,13 @@
 import base.WebTestBase;
 import dataProviders.DataProviders;
+import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 import pages.LoginPage;
+import pages.MainPage;
+import utils.PageUtils;
+
+import static org.assertj.core.api.Assertions.*;
+import static utils.PageUtils.*;
 
 public class LoginPageTests extends WebTestBase {
 
@@ -26,6 +32,10 @@ public class LoginPageTests extends WebTestBase {
         loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login(username, password);
+        loginPage.waitForPageUrlChangedTo(MainPage.URL);
+        assertThat(getCurrentPageUrl(driver))
+                .as("User should be navigated to the Main page")
+                .isEqualTo(MainPage.URL);
     }
 
     @Test(dataProvider = "invalid-creds-provider", dataProviderClass = DataProviders.class)

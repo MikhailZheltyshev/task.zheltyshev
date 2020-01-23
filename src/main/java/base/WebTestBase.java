@@ -9,7 +9,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import utils.PropertyReader;
 
@@ -20,7 +21,7 @@ public class WebTestBase {
     protected WebDriver driver;
     private String browserName;
 
-    @BeforeMethod
+    @BeforeClass
     public void setUp() {
         browserName = PropertyReader.getProperty("browser");
         switch (browserName.toUpperCase()) {
@@ -49,7 +50,12 @@ public class WebTestBase {
         driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 
-    @AfterMethod
+    @BeforeMethod
+    public void cleanUp() {
+        driver.manage().deleteAllCookies();
+    }
+
+    @AfterClass
     public void tearDown() {
         if (driver != null) {
             driver.quit();

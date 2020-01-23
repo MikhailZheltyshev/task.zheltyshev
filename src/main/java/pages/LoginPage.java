@@ -4,7 +4,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,11 +25,6 @@ public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver) {
         super(driver);
-        initPage(driver);
-    }
-
-    private void initPage(final WebDriver driver) {
-        PageFactory.initElements(driver, this);
     }
 
     public void open() {
