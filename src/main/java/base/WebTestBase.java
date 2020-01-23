@@ -10,22 +10,21 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import utils.PropertyReader;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import java.util.concurrent.TimeUnit;
 
-import static utils.PropertyReader.*;
+import static utils.PropertyReader.getProperty;
 
 public class WebTestBase {
 
     protected WebDriver driver;
-    private String browserName;
 
+    @Parameters("browser")
     @BeforeClass
-    public void setUp() {
-        browserName = getProperty("browser");
+    public void setUp(@Optional("chrome") String browserName) {
         switch (browserName.toUpperCase()) {
             case "CHROME":
                 ChromeDriverManager.chromedriver().setup();

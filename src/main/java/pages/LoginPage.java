@@ -17,7 +17,7 @@ public class LoginPage extends BasePage {
     @FindBy(id = "password")
     private WebElement passwordField;
 
-    @FindBy(xpath = "//button[text()='Войти']")
+    @FindBy(css = ".login-container button")
     private WebElement loginButton;
 
     @FindBy(className = "error")

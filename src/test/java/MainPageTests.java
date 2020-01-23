@@ -8,8 +8,7 @@ import utils.TaskListGenerator;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static utils.PageUtils.getCurrentPageUrl;
+import static pages.BasePage.checkCurrentUrlIsEqualToExpected;
 import static utils.PageUtils.waitForPageUrlChangedTo;
 
 public class MainPageTests extends WebTestBase {
@@ -26,6 +25,11 @@ public class MainPageTests extends WebTestBase {
     }
 
     @Test
+    public void checkPageHeaderPanelIsDisplayed() {
+        mainPage.checkHeaderPanelIsDisplayed();
+    }
+
+    @Test
     public void checkLogOutButtonHasExpectedLabel() {
         mainPage.checkLogOutButtonLabelEqualsTo("Выход");
     }
@@ -35,9 +39,42 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkLogOutButtonIsDisplayed();
         mainPage.clickOnLogOutButton();
         waitForPageUrlChangedTo(LoginPage.URL, driver);
-        assertThat(getCurrentPageUrl(driver))
-                .as("User should be logged out and redirected to the Login page")
-                .isEqualTo(LoginPage.URL);
+        checkCurrentUrlIsEqualToExpected(LoginPage.URL, driver);
+    }
+
+    @Test
+    public void checkTaskInputFieldIsDisplayed() {
+        mainPage.checkTaskInputFieldIsDisplayed();
+    }
+
+    @Test
+    public void checkAddTaskButtonIsDisplayed() {
+        mainPage.checkAddTaskButtonIsDisplayed();
+    }
+
+    @Test
+    public void checkAddTaskButtonHasExpectedLabel() {
+        mainPage.checkAddTaskButtonHasExpectedLabel("Добавить запись");
+    }
+
+    @Test
+    public void checkTaskInputTitleIsDisplayed() {
+        mainPage.checkTaskInputTitleIsDisplayed();
+    }
+
+    @Test
+    public void checkTaskInputHasExpectedLabel() {
+        mainPage.checkTaskInputTitleEqualsTo("Управление");
+    }
+
+    @Test
+    public void checkTasksListTitleIsDisplayed() {
+        mainPage.checkTasksListTitleIsDisplayed();
+    }
+
+    @Test
+    public void checkTasksListHasExpectedLabel() {
+        mainPage.checkTasksListTitleEqualsTo("Список дел");
     }
 
     @Test
@@ -58,6 +95,53 @@ public class MainPageTests extends WebTestBase {
         loginPage.login("john_dow@some.domaine.com", "123456789");
         waitForPageUrlChangedTo(MainPage.URL, driver);
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
+    }
+
+    @Test
+    public void checkTasksInListAreCorrectlyNumerated() {
+        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        mainPage.checkTaskInputFieldIsDisplayed();
+        mainPage.addTasks(tasksToBeAdded);
+        mainPage.checkTasksNumerationIsCorrect(tasksToBeAdded);
+    }
+
+    @Test
+    public void checkUserNotAbleToAddEmptyTaskToTasksList() {
+        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(1, 15);
+        mainPage.checkTaskInputFieldIsDisplayed();
+        mainPage.addTasks(tasksToBeAdded);
+        mainPage.addTask("");
+        mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
+    }
+
+    //Clear input doesn't work as expected
+    @Test
+    public void checkTaskIsNotAddedAfterUserClearedInput() {
+        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(1, 15);
+        mainPage.checkTaskInputFieldIsDisplayed();
+        mainPage.addTasks(tasksToBeAdded);
+        mainPage.sendKeysToTaskInputField(TaskListGenerator.getRandomString(15));
+        mainPage.clearTaskInputField();
+        mainPage.clickOnAddTaskButton();
+        mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
+    }
+
+    @Test
+    public void checkUserCantAddMoreThanTenTasks() {
+        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        mainPage.checkTaskInputFieldIsDisplayed();
+        mainPage.addTasks(tasksToBeAdded);
+        mainPage.sendKeysToTaskInputField(TaskListGenerator.getRandomString(15));
+        mainPage.clickOnAddTaskButton();
+        mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
+    }
+
+    @Test
+    public void checkEachTaskRowHasRemoveButton() {
+        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        mainPage.checkTaskInputFieldIsDisplayed();
+        mainPage.addTasks(tasksToBeAdded);
+        mainPage.checkEachTaskHasRemoveButton();
     }
 
     @AfterMethod
