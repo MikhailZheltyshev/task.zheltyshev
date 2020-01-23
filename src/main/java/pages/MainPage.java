@@ -1,10 +1,17 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import utils.PageUtils;
+import utils.WebElementsUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static utils.WebElementsUtils.*;
 
 public class MainPage extends BasePage {
 
@@ -27,6 +34,20 @@ public class MainPage extends BasePage {
 
     @FindBy(css = ".create-form button")
     private WebElement addTaskButton;
+
+    @FindBy(className = "single-todo")
+    private List<WebElement> tasksRows;
+
+    @FindBy(css = ".single-todo .todo-description")
+    private List<WebElement> tasksDescriptions;
+
+    @FindBy(css = ".single-todo .todo-index")
+    private List<WebElement> tasksIndexes;
+
+    @FindBy(css = ".single-todo .icon-button")
+    private List<WebElement> taskRemoveButtons;
+
+    private static final String FIRST_REMOVE_TASK_BUTTON_XPATH = "//button[@class='icon-button red-icon'][1]";
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -52,6 +73,31 @@ public class MainPage extends BasePage {
         taskInputField.clear();
         taskInputField.sendKeys(taskText);
         addTaskButton.click();
+    }
+
+    public void addTasks(List<String> tasks) {
+        tasks.forEach(task -> addTask(task));
+    }
+
+    public int getNumberOfTasks() {
+        return tasksRows.size();
+    }
+
+    public List<String> getAllTasksDescriptions() {
+        return collectWebElementsLabels(tasksDescriptions);
+    }
+
+    public List<String> getAllTasksIndexes() {
+        return collectWebElementsLabels(tasksDescriptions);
+    }
+
+    public void clearTasksList() {
+        final int numberOfTasks = tasksRows.size();
+        for (int i = 0; i < numberOfTasks; i++) {
+            WebElement firstTaskRemoveButton = driver.findElement(By.xpath(FIRST_REMOVE_TASK_BUTTON_XPATH));
+            firstTaskRemoveButton.click();
+            waitForWebElementInvisibility(firstTaskRemoveButton, driver);
+        }
     }
 
     public void checkLogOutButtonIsDisplayed() {
@@ -94,5 +140,17 @@ public class MainPage extends BasePage {
         assertThat(addTaskButton.isDisplayed())
                 .as("Add task button should be displayed")
                 .isTrue();
+    }
+
+    public void checkThatNumberOfTasksIsEqualTo(int expectedNumber) {
+        assertThat(getNumberOfTasks())
+                .as("Number of tasks should be equal to {}", expectedNumber)
+                .isEqualTo(expectedNumber);
+    }
+
+    public void checkTasksDescriptionsEqualToExpected(List<String> expectedTasks) {
+        assertThat(getAllTasksDescriptions())
+                .as("List of tasks in ToDo list should be equal to expected")
+                .isEqualTo(expectedTasks);
     }
 }

@@ -1,13 +1,13 @@
 import base.WebTestBase;
 import dataProviders.DataProviders;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.MainPage;
 import utils.PageUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static utils.PageUtils.*;
+import static utils.PageUtils.getCurrentPageUrl;
 
 public class LoginPageTests extends WebTestBase {
 
@@ -32,7 +32,7 @@ public class LoginPageTests extends WebTestBase {
         loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login(username, password);
-        loginPage.waitForPageUrlChangedTo(MainPage.URL);
+        waitForPageUrlChangedTo(MainPage.URL, driver);
         assertThat(getCurrentPageUrl(driver))
                 .as("User should be navigated to the Main page")
                 .isEqualTo(MainPage.URL);
