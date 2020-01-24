@@ -1,4 +1,6 @@
-import base.WebTestBase;
+package web;
+
+import base.web.WebTestBase;
 import dataProviders.DataProviders;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

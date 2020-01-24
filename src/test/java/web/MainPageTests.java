@@ -1,10 +1,12 @@
-import base.WebTestBase;
+package web;
+
+import base.web.WebTestBase;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.MainPage;
-import utils.TaskListGenerator;
+import utils.StringsListGenerator;
 
 import java.util.List;
 
@@ -79,7 +81,7 @@ public class MainPageTests extends WebTestBase {
 
     @Test
     public void checkTasksCanBeAddedToTheTasksList() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(5, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(5, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
@@ -87,7 +89,7 @@ public class MainPageTests extends WebTestBase {
 
     @Test
     public void checkListOfTasksDescriptionsRemainsAfterLogOut() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(5, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(5, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
         mainPage.clickOnLogOutButton();
@@ -99,7 +101,7 @@ public class MainPageTests extends WebTestBase {
 
     @Test
     public void checkTasksInListAreCorrectlyNumerated() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
         mainPage.checkTasksNumerationIsCorrect(tasksToBeAdded);
@@ -107,7 +109,7 @@ public class MainPageTests extends WebTestBase {
 
     @Test
     public void checkUserNotAbleToAddEmptyTaskToTasksList() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(1, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(1, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
         mainPage.addTask("");
@@ -117,10 +119,10 @@ public class MainPageTests extends WebTestBase {
     //Clear input doesn't work as expected
     @Test
     public void checkTaskIsNotAddedAfterUserClearedInput() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(1, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(1, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
-        mainPage.sendKeysToTaskInputField(TaskListGenerator.getRandomString(15));
+        mainPage.sendKeysToTaskInputField(StringsListGenerator.getRandomString(15));
         mainPage.clearTaskInputField();
         mainPage.clickOnAddTaskButton();
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
@@ -128,17 +130,17 @@ public class MainPageTests extends WebTestBase {
 
     @Test
     public void checkUserCantAddMoreThanTenTasks() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
-        mainPage.sendKeysToTaskInputField(TaskListGenerator.getRandomString(15));
+        mainPage.sendKeysToTaskInputField(StringsListGenerator.getRandomString(15));
         mainPage.clickOnAddTaskButton();
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
     @Test
     public void checkEachTaskRowHasRemoveButton() {
-        List<String> tasksToBeAdded = TaskListGenerator.generateListOfRandomStrings(10, 15);
+        List<String> tasksToBeAdded = StringsListGenerator.generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
         mainPage.checkEachTaskHasRemoveButton();

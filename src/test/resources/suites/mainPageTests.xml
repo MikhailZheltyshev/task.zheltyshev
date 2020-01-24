@@ -4,7 +4,7 @@
 
     <test name="Main page tests">
         <classes>
-            <class name="MainPageTests" />
+            <class name="web.MainPageTests" />
         </classes>
     </test>
 

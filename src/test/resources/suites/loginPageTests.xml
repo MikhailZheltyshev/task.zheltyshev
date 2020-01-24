@@ -4,7 +4,7 @@
 
     <test name="Login page tests">
         <classes>
-            <class name="LoginPageTests" />
+            <class name="web.LoginPageTests" />
         </classes>
     </test>
 

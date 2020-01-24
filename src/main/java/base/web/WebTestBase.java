@@ -1,4 +1,4 @@
-package base;
+package base.web;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.EdgeDriverManager;
