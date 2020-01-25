@@ -29,7 +29,7 @@ public class ServiceProvider {
     }
 
     public static <S> S createService(Class<S> serviceClass, final String authToken) {
-        AuthenticationInterceptor interceptor = new AuthenticationInterceptor(authToken);
+        AuthorizationInterceptor interceptor = new AuthorizationInterceptor(authToken);
         if (!httpClient.interceptors().contains(interceptor)) {
             httpClient.addInterceptor(interceptor);
             builder.client(httpClient.build());

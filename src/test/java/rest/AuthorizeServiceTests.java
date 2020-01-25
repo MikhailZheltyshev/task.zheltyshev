@@ -19,7 +19,7 @@ import static constants.LoginResponseBodyStatuses.SUCCESS_STATUS;
 import static helpers.RestHelper.convertSetCookiesStringToMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoginServiceTests {
+public class AuthorizeServiceTests {
 
     private AuthorizationService authorizationService;
 
@@ -28,7 +28,9 @@ public class LoginServiceTests {
         this.authorizationService = new AuthorizationService();
     }
 
-    @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "positive"},
+            dataProvider = "valid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
         ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
@@ -37,7 +39,9 @@ public class LoginServiceTests {
                 .isEqualTo(SUCCESS_STATUS);
     }
 
-    @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "positive"},
+            dataProvider = "valid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkOkHttpStatusReturnedForLoginRequestWithValidCredentials(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
         int loginResponseHttpCode = authorizationService.loginWithCredentials(credentials).code();
@@ -46,7 +50,9 @@ public class LoginServiceTests {
                 .isEqualTo(OK);
     }
 
-    @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "positive"},
+            dataProvider = "valid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkSessionIdIsReturnedInResponseBodyForLoginRequestWithValidCredentials(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
         LoginResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
@@ -55,7 +61,9 @@ public class LoginServiceTests {
                 .isNotNull();
     }
 
-    @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "positive"},
+            dataProvider = "valid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkAuthorizationTokenReturnedInResponseHeaderForLoginRequestWithValidCredentials(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
         Headers loginResponseHeaders = authorizationService.loginWithCredentials(credentials).headers();
@@ -65,7 +73,9 @@ public class LoginServiceTests {
                 .isNotBlank();
     }
 
-    @Test(dataProvider = "invalid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "negative"},
+            dataProvider = "invalid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkLoginResponseHasFailedStatusInBodyForLoginRequestWithInvalidCredentials(String username,
                                                                                              String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
@@ -75,7 +85,9 @@ public class LoginServiceTests {
                 .isEqualTo(FAILED_STATUS);
     }
 
-    @Test(dataProvider = "invalid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"rest", "login-service", "negative"},
+            dataProvider = "invalid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkUnauthorizedHttpStatusCodeIsReturnedForLoginRequestWithInvalidCredentials(String username,
                                                                                                String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
@@ -85,7 +97,9 @@ public class LoginServiceTests {
                 .isEqualTo(UNAUTHORIZED);
     }
 
-    @Test(dataProvider = "invalid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"ui", "login-service", "negative"},
+            dataProvider = "invalid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkAuthorizationTokenIsNotReturnedInResponseHeaderForLoginRequestWithInvalidCredentials(String username,
                                                                                                           String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);

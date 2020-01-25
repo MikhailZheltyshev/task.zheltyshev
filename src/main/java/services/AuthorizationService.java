@@ -1,6 +1,7 @@
 package services;
 
 import base.service.ServiceProvider;
+import helpers.RestHelper;
 import interfaces.Authorization;
 import models.LoginResponseStatus;
 import models.UserCredentials;
@@ -10,17 +11,23 @@ import java.io.IOException;
 
 public class AuthorizationService {
 
-    private Authorization authorizationService;
+    private Authorization authorizationInterface;
 
     public AuthorizationService() {
-        this.authorizationService = ServiceProvider.createService(Authorization.class);
+        this.authorizationInterface = ServiceProvider.createService(Authorization.class);
     }
 
     public AuthorizationService(String username, String password) {
-        this.authorizationService = ServiceProvider.createService(Authorization.class, username, password);
+        this.authorizationInterface = ServiceProvider.createService(Authorization.class, username, password);
     }
 
     public Response<LoginResponseStatus> loginWithCredentials(UserCredentials credentials) throws IOException {
-        return authorizationService.login(credentials).execute();
+        return authorizationInterface.login(credentials).execute();
+    }
+
+    public String getAuthToken(UserCredentials credentials) throws IOException {
+        Response<LoginResponseStatus> loginResponseStatus = authorizationInterface.login(credentials).execute();
+        String setCookieString = loginResponseStatus.headers().get("Set-Cookie");
+        return RestHelper.convertSetCookiesStringToMap(setCookieString).get("Authorization");
     }
 }

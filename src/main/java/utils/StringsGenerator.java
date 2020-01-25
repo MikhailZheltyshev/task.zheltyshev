@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class StringsListGenerator {
+public class StringsGenerator {
 
+    public static final String EMPTY = "";
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
-    private static SecureRandom RND = new SecureRandom();
+    private static final SecureRandom RND = new SecureRandom();
 
     public static List<String> generateListOfRandomStrings(int listSize, int maxStringLength) {
         return IntStream.range(0, listSize)

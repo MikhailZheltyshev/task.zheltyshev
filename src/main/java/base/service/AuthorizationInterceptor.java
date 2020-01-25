@@ -6,11 +6,11 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
-public class AuthenticationInterceptor implements Interceptor {
+public class AuthorizationInterceptor implements Interceptor {
 
     private String authToken;
 
-    public AuthenticationInterceptor(String token) {
+    public AuthorizationInterceptor(String token) {
         this.authToken = token;
     }
 
@@ -18,7 +18,7 @@ public class AuthenticationInterceptor implements Interceptor {
         Request original = chain.request();
 
         Request.Builder builder = original.newBuilder()
-                .header("Authorization", authToken);
+                .header("Cookie", String.format("Authorization= %s", authToken));
 
         Request request = builder.build();
         return chain.proceed(request);

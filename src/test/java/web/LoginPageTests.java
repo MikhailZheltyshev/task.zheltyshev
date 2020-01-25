@@ -20,19 +20,21 @@ public class LoginPageTests extends WebTestBase {
         loginPage = new LoginPage(driver);
     }
 
-    @Test
+    @Test(groups = {"ui", "login-page", "positive"})
     public void checkLoginFormElementsAreDisplayed() {
         loginPage.open();
         loginPage.checkLoginFormElementsAreDisplayed();
     }
 
-    @Test
+    @Test(groups = {"ui", "login-page", "positive"})
     public void checkLoginButtonHasExpectedText() {
         loginPage.open();
         loginPage.checkLoginButtonHasExpectedText("Войти");
     }
 
-    @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"ui", "login-page", "positive"},
+            dataProvider = "valid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkLoginWithValidCredentials(String username, String password) {
         loginPage.open();
         loginPage.login(username, password);
@@ -40,10 +42,13 @@ public class LoginPageTests extends WebTestBase {
         checkCurrentUrlIsEqualToExpected(MainPage.URL, driver);
     }
 
-    @Test(dataProvider = "invalid-creds-provider", dataProviderClass = DataProviders.class)
+    @Test(groups = {"ui", "login-page", "negative"},
+            dataProvider = "invalid-creds-provider",
+            dataProviderClass = DataProviders.class)
     public void checkLoginWithInValidCredentials(String username, String password) {
         loginPage.open();
         loginPage.login(username, password);
+        checkCurrentUrlIsEqualToExpected(LoginPage.URL, driver);
         loginPage.checkLoginErrorMessageIsDisplayedWithExpectedText("Неверные логин или пароль");
     }
 
