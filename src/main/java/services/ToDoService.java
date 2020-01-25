@@ -37,7 +37,7 @@ public class ToDoService {
     }
 
     @Step("Perform request to ToDo service to remove task with \"{0}\" id")
-    public Response<ResponseStatus> removeTask(int taskId) {
+    public Response<ResponseBody> removeTask(int taskId) {
         ToDo task = new ToDo(taskId, null, null);
         try {
             return toDoInterface.removeTask(task).execute();
@@ -66,6 +66,11 @@ public class ToDoService {
         return toDoList.getTodoList().stream()
                 .map(ToDo::getDescription)
                 .collect(toList());
+    }
+
+    @Step("Collect all ToDo tasks")
+    public ToDoList getToDoList() {
+        return convertResponseBodyToType(requestToDoList().body(), ToDoList.class);
     }
 
     public void removeAllTasks() {

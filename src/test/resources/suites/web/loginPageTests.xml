@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Login page tests" verbose="1" parallel="tests">
+<suite name="Login page tests" parallel="classes">
     <listeners>
         <listener class-name="listeners.AllureListener"/>
     </listeners>
@@ -8,8 +8,8 @@
     <test name="Login page tests">
         <classes>
             <class name="web.LoginPageTests">
-                <parameter name="defaultUsername" value="john_dow@some.domaine.com"/>
-                <parameter name="defaultPassword" value="123456789"/>
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
             </class>
         </classes>
     </test>

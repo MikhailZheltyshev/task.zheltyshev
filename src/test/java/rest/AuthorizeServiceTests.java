@@ -9,7 +9,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import services.AuthorizationService;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static constants.HttpStatusCodes.OK;
@@ -28,10 +27,10 @@ public class AuthorizeServiceTests {
         this.authorizationService = new AuthorizationService();
     }
 
-    @Test(
+    @Test(description = "Check that login request with valid credentials to Authorize service returns SUCCESS status in response body",
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
-    public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) throws IOException {
+    public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
         assertThat(loginResponseStatus.getStatus())
@@ -39,10 +38,10 @@ public class AuthorizeServiceTests {
                 .isEqualTo(SUCCESS_STATUS);
     }
 
-    @Test(groups = {"rest", "login-service", "positive"},
+    @Test(description = "Check that login request with valid credentials to Authorize service returns 200 OK Http status in response",
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
-    public void checkOkHttpStatusReturnedForLoginRequestWithValidCredentials(String username, String password) throws IOException {
+    public void checkOkHttpStatusReturnedForLoginRequestWithValidCredentials(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         int loginResponseHttpCode = authorizationService.loginWithCredentials(credentials).code();
         assertThat(loginResponseHttpCode)
@@ -50,10 +49,10 @@ public class AuthorizeServiceTests {
                 .isEqualTo(OK);
     }
 
-    @Test(groups = {"rest", "login-service", "positive"},
+    @Test(description = "Check that session id is returned in response body for request with valid credentials",
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
-    public void checkSessionIdIsReturnedInResponseBodyForLoginRequestWithValidCredentials(String username, String password) throws IOException {
+    public void checkSessionIdIsReturnedInResponseBodyForLoginRequestWithValidCredentials(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         LoginResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
         assertThat(loginResponseStatus.getSessionId())
@@ -61,10 +60,11 @@ public class AuthorizeServiceTests {
                 .isNotNull();
     }
 
-    @Test(groups = {"rest", "login-service", "positive"},
+    @Test(description = "Check that auth token is returned in response body for request with valid credentials",
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
-    public void checkAuthorizationTokenReturnedInResponseHeaderForLoginRequestWithValidCredentials(String username, String password) throws IOException {
+    public void checkAuthorizationTokenReturnedInResponseHeaderForLoginRequestWithValidCredentials(String username,
+                                                                                                   String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         Headers loginResponseHeaders = authorizationService.loginWithCredentials(credentials).headers();
         Map<String, String> actualSetCookiesAsMap = convertSetCookiesStringToMap(loginResponseHeaders.get("Set-Cookie"));
@@ -73,11 +73,11 @@ public class AuthorizeServiceTests {
                 .isNotBlank();
     }
 
-    @Test(groups = {"rest", "login-service", "negative"},
+    @Test(description = "Check that login request with invalid credentials to Authorize service returns FAILED status in response body",
             dataProvider = "invalid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkLoginResponseHasFailedStatusInBodyForLoginRequestWithInvalidCredentials(String username,
-                                                                                             String password) throws IOException {
+                                                                                             String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
         assertThat(loginResponseStatus.getStatus())
@@ -85,11 +85,11 @@ public class AuthorizeServiceTests {
                 .isEqualTo(FAILED_STATUS);
     }
 
-    @Test(groups = {"rest", "login-service", "negative"},
+    @Test(description = "Check that login request with invalid credentials to Authorize service returns 401 Unauthorized Http status in response",
             dataProvider = "invalid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkUnauthorizedHttpStatusCodeIsReturnedForLoginRequestWithInvalidCredentials(String username,
-                                                                                               String password) throws IOException {
+                                                                                               String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         int loginResponseHttpCode = authorizationService.loginWithCredentials(credentials).code();
         assertThat(loginResponseHttpCode)
@@ -97,11 +97,11 @@ public class AuthorizeServiceTests {
                 .isEqualTo(UNAUTHORIZED);
     }
 
-    @Test(groups = {"ui", "login-service", "negative"},
+    @Test(description = "Check that auth token is not returned in response body for request with invalid credentials",
             dataProvider = "invalid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkAuthorizationTokenIsNotReturnedInResponseHeaderForLoginRequestWithInvalidCredentials(String username,
-                                                                                                          String password) throws IOException {
+                                                                                                          String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         Headers loginResponseHeaders = authorizationService.loginWithCredentials(credentials).headers();
         Map<String, String> actualSetCookiesAsMap = convertSetCookiesStringToMap(loginResponseHeaders.get("Set-Cookie"));

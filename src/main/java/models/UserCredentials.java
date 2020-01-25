@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class UserCredentials {
 
@@ -41,10 +40,7 @@ public class UserCredentials {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("username", username)
-                .append("password", password)
-                .toString();
+        return String.format("[username=%s, password=%s]", username, password);
     }
 
     @Override

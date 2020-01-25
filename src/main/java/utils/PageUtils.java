@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static utils.PropertyReader.getProperty;
+
 public class PageUtils {
 
     public static String getCurrentPageUrl(WebDriver driver) {
@@ -21,11 +23,12 @@ public class PageUtils {
     }
 
     public static void waitForPageUrlChangedTo(String targetUrl, WebDriver driver) {
+        int timeOut = Integer.parseInt(getProperty("page.load.timeout"));
         try {
-            Wait<WebDriver> wait = new WebDriverWait(driver, 10);
+            Wait<WebDriver> wait = new WebDriverWait(driver, timeOut);
             wait.until(ExpectedConditions.urlToBe(targetUrl));
         } catch (TimeoutException e) {
-            throw new IllegalStateException(String.format("Page's URL is not changed to %s after %d seconds", targetUrl, 10), e);
+            throw new IllegalStateException(String.format("Page's URL is not changed to %s after %d seconds", targetUrl, timeOut), e);
         }
     }
 }

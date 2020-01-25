@@ -12,7 +12,7 @@ public class ToDoList {
 
     @SerializedName("todoList")
     @Expose
-    private List<ToDo> todoList = null;
+    private List<ToDo> todoList;
 
     public ToDoList() {
     }

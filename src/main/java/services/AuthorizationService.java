@@ -6,6 +6,7 @@ import interfaces.Authorization;
 import io.qameta.allure.Step;
 import models.LoginResponseStatus;
 import models.UserCredentials;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -17,13 +18,25 @@ public class AuthorizationService {
     public AuthorizationService() {
         this.authorizationInterface = ServiceProvider.createService(Authorization.class);
     }
+    public AuthorizationService(String authToken) {
+        this.authorizationInterface = ServiceProvider.createService(Authorization.class, authToken);
+    }
 
-    @Step("Perform login request to \"Authorize\" service with \"{0}\" username and \"{1}\" password")
+    @Step("Perform login request to \"Authorize\" service with \"{0}\" credentials")
     public Response<LoginResponseStatus> loginWithCredentials(UserCredentials credentials) {
         try {
             return authorizationInterface.login(credentials).execute();
         } catch (IOException e) {
             throw new IllegalStateException("Unable to perform login request", e);
+        }
+    }
+
+    @Step("Perform logout request to \"Authorize\" service")
+    public Response<ResponseBody> logout() {
+        try {
+            return authorizationInterface.logout().execute();
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to perform logout request", e);
         }
     }
 

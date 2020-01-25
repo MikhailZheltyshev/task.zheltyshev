@@ -16,25 +16,22 @@ public class LoginPageTests extends WebTestBase {
 
     @BeforeMethod
     public void setUp() {
-        loginPage = new LoginPage(driver);
+        this.loginPage = new LoginPage(driver);
     }
 
-    @Test(description = "Check that username field, password field and login button are displayed on the Login page",
-            groups = {"ui", "login-page", "positive"})
+    @Test(description = "Check that username field, password field and login button are displayed on the Login page")
     public void checkLoginFormElementsAreDisplayed() {
         loginPage.open();
         loginPage.checkLoginFormElementsAreDisplayed();
     }
 
-    @Test(description = "Check that Log In button has expected text",
-            groups = {"ui", "login-page", "positive"})
+    @Test(description = "Check that Log In button has expected text")
     public void checkLoginButtonHasExpectedText() {
         loginPage.open();
         loginPage.checkLoginButtonHasExpectedText("Войти");
     }
 
     @Test(description = "Check that User can log in with valid credentials",
-            groups = {"ui", "login-page", "positive"},
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkLoginWithValidCredentials(String username, String password) {
@@ -45,7 +42,6 @@ public class LoginPageTests extends WebTestBase {
     }
 
     @Test(description = "Check that User can't log in with invalid credentials",
-            groups = {"ui", "login-page", "negative"},
             dataProvider = "invalid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkLoginWithInValidCredentials(String username, String password) {
@@ -55,7 +51,7 @@ public class LoginPageTests extends WebTestBase {
         loginPage.checkLoginErrorMessageIsDisplayedWithExpectedText("Неверные логин или пароль");
     }
 
-    @Parameters({"defaultUsername", "defaultPassword"})
+    @Parameters({"username", "password"})
     @Test(description = "Check that User can log in again after returning to Login page by browser's back button",
             groups = {"ui", "login-page", "negative"})
     public void checkUserCanLoginAgainAfterReturningBackToLoginPageFromMainPage(@Optional("john_dow@some.domaine.com") String username,

@@ -1,6 +1,7 @@
 package rest;
 
 import models.ResponseStatus;
+import models.ToDo;
 import models.ToDoList;
 import models.UserCredentials;
 import okhttp3.ResponseBody;
@@ -14,20 +15,23 @@ import java.util.List;
 import static constants.HttpStatusCodes.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static utils.ApiResponseUtils.convertResponseBodyToType;
+import static utils.ListsUtils.getRandomElementFromList;
 import static utils.ListsUtils.joinLists;
 import static utils.StringsGenerator.*;
 
 public class ToDoServiceWithAuthTests {
 
     private ToDoService toDoService;
+    private AuthorizationService authorizationService;
+    private String authToken;
 
-    @Parameters({"defaultUsername", "defaultPassword"})
-    @BeforeMethod(description = "Setting up authorized access to ToDo service",
-            groups = {"authorized"})
+    @Parameters({"username", "password"})
+    @BeforeMethod(description = "Setting up authorized access to ToDo service")
     public void setUpAuthorized(@Optional("john_dow@some.domaine.com") String username,
                                 @Optional("123456789") String password) {
         UserCredentials cred = new UserCredentials(username, password);
-        String authToken = new AuthorizationService().getAuthToken(cred);
+        this.authorizationService = new AuthorizationService();
+        this.authToken = authorizationService.getAuthToken(cred);
         this.toDoService = new ToDoService(authToken);
     }
 
@@ -87,8 +91,35 @@ public class ToDoServiceWithAuthTests {
                 .isEqualTo(initialTasksList);
     }
 
-    @AfterMethod
-    public void cleanUp() {
-        toDoService.removeAllTasks();
+    @Test(description = "Check that task can be removed by authorized User")
+    public void checkTaskCanBeRemovedByAuthorizedUser() {
+        toDoService.addListOfTasks(generateListOfRandomStrings(5, 10));
+        ToDoList expectedToDoList = toDoService.getToDoList();
+        ToDo taskToBeRemoved = getRandomElementFromList(expectedToDoList.getTodoList());
+        expectedToDoList.getTodoList().remove(taskToBeRemoved);
+        toDoService.removeTask(taskToBeRemoved.getId());
+        ToDoList actualToDoList = toDoService.getToDoList();
+        assertThat(actualToDoList)
+                .as("Check that task is being removed by authorized User")
+                .isEqualTo(expectedToDoList);
+    }
+
+    @Test(description = "Check User can't access ToDo list after logout request")
+    public void checkUserCantAccessToDoListAfterLogoutRequest() {
+        AuthorizationService logoutService = new AuthorizationService(authToken);
+        toDoService.addListOfTasks(generateListOfRandomStrings(5, 10));
+        logoutService.logout();
+        String responseContentType = toDoService.requestToDoList().body().contentType().toString();
+        assertThat(responseContentType)
+                .as("User should not retrieve ToDo list after logout using old auth token")
+                .isEqualTo("text/html;charset=UTF-8");
+    }
+
+    @Parameters({"username", "password"})
+    @AfterMethod(description = "Clean up tasks after tests")
+    public void cleanUp(@Optional("john_dow@some.domaine.com") String username,
+                        @Optional("123456789") String password) {
+        UserCredentials cred = new UserCredentials(username, password);
+        new ToDoService(authorizationService.getAuthToken(cred)).removeAllTasks();
     }
 }

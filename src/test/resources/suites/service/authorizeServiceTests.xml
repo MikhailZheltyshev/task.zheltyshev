@@ -8,8 +8,8 @@
     <test name="Authorize service tests">
         <classes>
             <class name="rest.AuthorizeServiceTests">
-                <parameter name="defaultUsername" value="john_dow@some.domaine.com"/>
-                <parameter name="defaultPassword" value="123456789"/>
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
             </class>
         </classes>
     </test>

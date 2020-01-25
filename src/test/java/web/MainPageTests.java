@@ -17,9 +17,9 @@ public class MainPageTests extends WebTestBase {
     private LoginPage loginPage;
     private MainPage mainPage;
 
-    @Parameters({"defaultUsername", "defaultPassword"})
+    @Parameters({"username", "password"})
     @BeforeMethod(description = "Login with valid User credentials")
-    public void login(@Optional("john_dow@some.domaine.com") String username,
+    public void setUp(@Optional("john_dow@some.domaine.com") String username,
                       @Optional("123456789") String password) {
         loginPage = new LoginPage(driver);
         loginPage.open();
@@ -99,7 +99,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Parameters({"defaultUsername", "defaultPassword"})
+    @Parameters({"username", "password"})
     @Test(description = "Check that the User's list of tasks is not get deleted after log out",
             groups = {"ui", "main-page", "positive"})
     public void checkListOfTasksRemainsAfterLogOut(String username, String password) {

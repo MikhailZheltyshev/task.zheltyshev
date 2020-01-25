@@ -115,8 +115,8 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/suites/web/loginPageTests.xml</suiteXmlFile>
                         <suiteXmlFile>src/test/resources/suites/web/mainPageTests.xml</suiteXmlFile>
-<!--                        <suiteXmlFile>src/test/resources/suites/service/authorizeServiceTests.xml</suiteXmlFile>-->
-<!--                        <suiteXmlFile>src/test/resources/suites/service/toDoServiceTests.xml</suiteXmlFile>-->
+                        <suiteXmlFile>src/test/resources/suites/service/authorizeServiceTests.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/suites/service/toDoServiceTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <!--Aspectj is needed for Allure tags to work (like @Step)-->
                     <argLine>

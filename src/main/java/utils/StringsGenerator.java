@@ -14,7 +14,7 @@ public class StringsGenerator {
 
     public static List<String> generateListOfRandomStrings(int listSize, int maxStringLength) {
         return IntStream.range(0, listSize)
-                .mapToObj(i -> getRandomString(maxStringLength))
+                .mapToObj(i -> getRandomString(maxStringLength).trim())
                 .collect(Collectors.toList());
     }
 

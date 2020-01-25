@@ -17,7 +17,7 @@ public interface TODO {
 
     @POST("/api/remove")
     @Headers("Content-Type:application/json")
-    Call<ResponseStatus> removeTask(@Body ToDo task);
+    Call<ResponseBody> removeTask(@Body ToDo task);
 
     @GET("/api/getAll")
     Call<ResponseBody> getToDoList();
