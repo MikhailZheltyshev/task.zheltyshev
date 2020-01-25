@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 public class StringsGenerator {
 
     public static final String EMPTY = "";
+    public static final String BLANK = " ";
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
     private static final SecureRandom RND = new SecureRandom();
 

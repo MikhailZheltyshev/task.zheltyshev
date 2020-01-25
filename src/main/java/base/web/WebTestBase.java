@@ -47,7 +47,6 @@ public class WebTestBase {
         }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Integer.parseInt(getProperty("implicitly.wait.timeout")), TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(Integer.parseInt(getProperty("script.timeout")), TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(Integer.parseInt(getProperty("page.load.timeout")), TimeUnit.SECONDS);
     }
 

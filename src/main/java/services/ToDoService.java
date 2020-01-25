@@ -64,7 +64,8 @@ public class ToDoService {
     }
 
     public void removeAllTasks() {
-        ToDoList toDoList = convertResponseBodyToType(requestToDoList().body(), ToDoList.class);
+        ResponseBody body = requestToDoList().body();
+        ToDoList toDoList = convertResponseBodyToType(body, ToDoList.class);
         toDoList.getTodoList().stream()
                 .map(ToDo::getId)
                 .forEach(id -> removeTask(id));

@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="ToDo service tests" verbose="1">
+
+    <test name="ToDo service tests">
+        <classes>
+            <class name="rest.ToDoServiceTests">
+                <parameter name="defaultUsername" value="john_dow@some.domaine.com"/>
+                <parameter name="defaultPassword" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+</suite>

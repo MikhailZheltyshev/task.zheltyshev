@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,16 +28,21 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Open Login page")
     public void open() {
         driver.get(URL);
     }
 
+    @Step("Perform login with \"{0}\" username and \"{1}\" password")
     public void login(String username, String password) {
+        usernameField.clear();
         usernameField.sendKeys(username);
+        passwordField.clear();
         passwordField.sendKeys(password);
         loginButton.click();
     }
 
+    @Step("Check login form is displayed")
     public void checkLoginFormElementsAreDisplayed() {
         final SoftAssertions soft = new SoftAssertions();
         soft.assertThat(usernameField.isDisplayed())
@@ -51,12 +57,14 @@ public class LoginPage extends BasePage {
         soft.assertAll();
     }
 
+    @Step("Check Login button has \"{0}\" as label")
     public void checkLoginButtonHasExpectedText(String expectedText) {
         assertThat(loginButton.getText())
                 .as("Login button should have correct text")
                 .isEqualTo(expectedText);
     }
 
+    @Step("Check Login error message is displayed with \"{0}\" text")
     public void checkLoginErrorMessageIsDisplayedWithExpectedText(String expectedErrorText) {
         final SoftAssertions soft = new SoftAssertions();
         soft.assertThat(loginErrorMessage.isDisplayed())

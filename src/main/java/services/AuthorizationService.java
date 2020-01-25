@@ -25,9 +25,13 @@ public class AuthorizationService {
         return authorizationInterface.login(credentials).execute();
     }
 
-    public String getAuthToken(UserCredentials credentials) throws IOException {
-        Response<LoginResponseStatus> loginResponseStatus = authorizationInterface.login(credentials).execute();
-        String setCookieString = loginResponseStatus.headers().get("Set-Cookie");
-        return RestHelper.convertSetCookiesStringToMap(setCookieString).get("Authorization");
+    public String getAuthToken(UserCredentials credentials) {
+        try {
+            Response<LoginResponseStatus> loginResponseStatus = authorizationInterface.login(credentials).execute();
+            String setCookieString = loginResponseStatus.headers().get("Set-Cookie");
+            return RestHelper.convertSetCookiesStringToMap(setCookieString).get("Authorization");
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to get auth token with credentials", e);
+        }
     }
 }

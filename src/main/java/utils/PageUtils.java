@@ -12,6 +12,14 @@ public class PageUtils {
         return driver.getCurrentUrl();
     }
 
+    public static void navigateBackToPreviousPage(WebDriver driver) {
+        driver.navigate().back();
+    }
+
+    public static void refreshPage(WebDriver driver) {
+        driver.navigate().refresh();
+    }
+
     public static void waitForPageUrlChangedTo(String targetUrl, WebDriver driver) {
         try {
             Wait<WebDriver> wait = new WebDriverWait(driver, 10);

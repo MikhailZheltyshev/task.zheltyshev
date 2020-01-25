@@ -4,14 +4,11 @@ import models.ResponseStatus;
 import models.ToDoList;
 import models.UserCredentials;
 import okhttp3.ResponseBody;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import retrofit2.Response;
 import services.AuthorizationService;
 import services.ToDoService;
 
-import java.io.IOException;
 import java.util.List;
 
 import static constants.HttpStatusCodes.OK;
@@ -25,8 +22,10 @@ public class ToDoServiceTests {
 
     private ToDoService toDoService;
 
+    @Parameters({"defaultUsername", "defaultPassword"})
     @BeforeMethod(groups = {"authorized"})
-    public void setUpAuthorized() throws IOException {
+    public void setUpAuthorized(@Optional("john_dow@some.domaine.com") String username,
+                                @Optional("123456789") String password) {
         UserCredentials cred = new UserCredentials("john_dow@some.domaine.com", "123456789");
         String authToken = new AuthorizationService().getAuthToken(cred);
         this.toDoService = new ToDoService(authToken);
@@ -39,26 +38,6 @@ public class ToDoServiceTests {
         assertThat(toDoListResponseCode)
                 .as("200 OK Http status should be returned on attempt to get ToDo list with valid auth token")
                 .isEqualTo(OK);
-    }
-
-    @Test(groups = {"rest", "todo-service", "negative"})
-    public void checkRequestForToDoListWithoutAuthTokenReturnsNotAuthorizedHttpStatusCode() {
-        toDoService = new ToDoService();
-        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
-        int toDoListResponseCode = toDoListResponse.code();
-        assertThat(toDoListResponseCode)
-                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list without auth token")
-                .isEqualTo(UNAUTHORIZED);
-    }
-
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
-    public void checkRequestForToDoListWithInvalidAuthTokenReturnsNotAuthorizedHttpStatusCode() {
-        toDoService = new ToDoService(getRandomString(10));
-        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
-        int toDoListResponseCode = toDoListResponse.code();
-        assertThat(toDoListResponseCode)
-                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list with invalid auth token")
-                .isEqualTo(UNAUTHORIZED);
     }
 
     @Test(groups = {"authorized", "rest", "todo-service", "negative"})
@@ -106,6 +85,27 @@ public class ToDoServiceTests {
         assertThat(actualTasksList)
                 .as("Initial tasks list weren't changed after attempt to create task with empty description")
                 .isEqualTo(initialTasksList);
+    }
+
+
+    @Test(groups = {"rest", "todo-service", "negative"})
+    public void checkRequestForToDoListWithoutAuthTokenReturnsNotAuthorizedHttpStatusCode() {
+        toDoService = new ToDoService();
+        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
+        int toDoListResponseCode = toDoListResponse.code();
+        assertThat(toDoListResponseCode)
+                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list without auth token")
+                .isEqualTo(UNAUTHORIZED);
+    }
+
+    @Test(groups = {"rest", "todo-service", "negative", "not-authorized"})
+    public void checkRequestForToDoListWithInvalidAuthTokenReturnsNotAuthorizedHttpStatusCode() {
+        toDoService = new ToDoService(getRandomString(10));
+        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
+        int toDoListResponseCode = toDoListResponse.code();
+        assertThat(toDoListResponseCode)
+                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list with invalid auth token")
+                .isEqualTo(UNAUTHORIZED);
     }
 
     @AfterMethod(groups = {"authorized"})
