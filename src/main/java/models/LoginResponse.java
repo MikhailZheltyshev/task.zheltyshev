@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SessionInfo {
+public class LoginResponse {
 
     @SerializedName("sessionId")
     @Expose
@@ -15,10 +15,10 @@ public class SessionInfo {
     @Expose
     private String status;
 
-    public SessionInfo() {
+    public LoginResponse() {
     }
 
-    public SessionInfo(Integer sessionId, String status) {
+    public LoginResponse(Integer sessionId, String status) {
         super();
         this.sessionId = sessionId;
         this.status = status;
@@ -61,10 +61,10 @@ public class SessionInfo {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof SessionInfo)) {
+        if (!(other instanceof LoginResponse)) {
             return false;
         }
-        SessionInfo rhs = ((SessionInfo) other);
+        LoginResponse rhs = ((LoginResponse) other);
         return new EqualsBuilder()
                 .append(sessionId, rhs.sessionId)
                 .append(status, rhs.status)
