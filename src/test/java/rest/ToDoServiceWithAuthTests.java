@@ -12,26 +12,26 @@ import services.ToDoService;
 import java.util.List;
 
 import static constants.HttpStatusCodes.OK;
-import static constants.HttpStatusCodes.UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static utils.ApiResponseUtils.convertResponseBodyToType;
 import static utils.ListsUtils.joinLists;
 import static utils.StringsGenerator.*;
 
-public class ToDoServiceTests {
+public class ToDoServiceWithAuthTests {
 
     private ToDoService toDoService;
 
     @Parameters({"defaultUsername", "defaultPassword"})
-    @BeforeMethod(groups = {"authorized"})
+    @BeforeMethod(description = "Setting up authorized access to ToDo service",
+            groups = {"authorized"})
     public void setUpAuthorized(@Optional("john_dow@some.domaine.com") String username,
                                 @Optional("123456789") String password) {
-        UserCredentials cred = new UserCredentials("john_dow@some.domaine.com", "123456789");
+        UserCredentials cred = new UserCredentials(username, password);
         String authToken = new AuthorizationService().getAuthToken(cred);
         this.toDoService = new ToDoService(authToken);
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "positive"})
+    @Test(description = "Check that 200 OK Http status code returned in response for authorized User requested ToDo list")
     public void checkAuthorizedRequestForToDoListReturnsOkHttpStatusCode() {
         Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
         int toDoListResponseCode = toDoListResponse.code();
@@ -40,7 +40,7 @@ public class ToDoServiceTests {
                 .isEqualTo(OK);
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
+    @Test(description = "Check that ToDo list returned in response for authorized User")
     public void checkAuthorizedRequestForToDoListReturnsToDoList() {
         ResponseBody toDoListResponseBody = toDoService.requestToDoList().body();
         ToDoList toDoList = convertResponseBodyToType(toDoListResponseBody, ToDoList.class);
@@ -49,7 +49,7 @@ public class ToDoServiceTests {
                 .isNotNull();
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
+    @Test(description = "Check that authorized User is able to create new tasks")
     public void checkAuthorizedUserCanAddTasks() {
         List<String> initialTasksList = toDoService.collectAllTasksDescriptions();
         List<String> tasksToAdd = generateListOfRandomStrings(5, 25);
@@ -61,7 +61,7 @@ public class ToDoServiceTests {
                 .isEqualTo(expectedTasksList);
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
+    @Test(description = "Check that 200 OK Http status is returned in response for User requested to create task with non-empty description")
     public void checkResponseForRequestToCreateNonEmptyTaskReturnsOkHttpStatus() {
         Response<ResponseStatus> responseOnTaskCreate = toDoService.createTask(getRandomString(5));
         assertThat(responseOnTaskCreate.code())
@@ -69,7 +69,7 @@ public class ToDoServiceTests {
                 .isEqualTo(OK);
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
+    @Test(description = "Check that 200 OK Http status is returned in response for User requested to create task with empty description")
     public void checkResponseForRequestToCreateEmptyTaskReturnsOkHttpStatus() {
         Response<ResponseStatus> responseOnTaskCreate = toDoService.createTask(EMPTY);
         assertThat(responseOnTaskCreate.code())
@@ -77,7 +77,7 @@ public class ToDoServiceTests {
                 .isEqualTo(OK);
     }
 
-    @Test(groups = {"authorized", "rest", "todo-service", "negative"})
+    @Test(description = "Check that empty task can't be added to the tasks list of authorized User")
     public void checkEmptyTaskCantBeAdded() {
         List<String> initialTasksList = toDoService.collectAllTasksDescriptions();
         toDoService.createTask(EMPTY);
@@ -87,28 +87,7 @@ public class ToDoServiceTests {
                 .isEqualTo(initialTasksList);
     }
 
-
-    @Test(groups = {"rest", "todo-service", "negative"})
-    public void checkRequestForToDoListWithoutAuthTokenReturnsNotAuthorizedHttpStatusCode() {
-        toDoService = new ToDoService();
-        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
-        int toDoListResponseCode = toDoListResponse.code();
-        assertThat(toDoListResponseCode)
-                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list without auth token")
-                .isEqualTo(UNAUTHORIZED);
-    }
-
-    @Test(groups = {"rest", "todo-service", "negative", "not-authorized"})
-    public void checkRequestForToDoListWithInvalidAuthTokenReturnsNotAuthorizedHttpStatusCode() {
-        toDoService = new ToDoService(getRandomString(10));
-        Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
-        int toDoListResponseCode = toDoListResponse.code();
-        assertThat(toDoListResponseCode)
-                .as("401 UNAUTHORIZED Http status should be returned on attempt to get ToDo list with invalid auth token")
-                .isEqualTo(UNAUTHORIZED);
-    }
-
-    @AfterMethod(groups = {"authorized"})
+    @AfterMethod
     public void cleanUp() {
         toDoService.removeAllTasks();
     }

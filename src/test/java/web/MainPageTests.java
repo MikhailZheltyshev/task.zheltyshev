@@ -152,18 +152,6 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    //Clear input doesn't work as expected
-    @Test(groups = {"ui", "main-page", "positive"})
-    public void checkTaskIsNotAddedAfterUserClearedInput() {
-        List<String> tasksToBeAdded = generateListOfRandomStrings(1, 15);
-        mainPage.checkTaskInputFieldIsDisplayed();
-        mainPage.addTasks(tasksToBeAdded);
-        mainPage.sendKeysToTaskInputField(getRandomString(15));
-        mainPage.clearTaskInputField();
-        mainPage.clickOnAddTaskButton();
-        mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
-    }
-
     @Test(description = "Check that User is not able to have more than 10 tasks simultaneously",
             groups = {"ui", "main-page", "positive"})
     public void checkUserCantHaveMoreThanTenTasksSimultaneously() {

@@ -23,12 +23,12 @@ public class AuthorizeServiceTests {
 
     private AuthorizationService authorizationService;
 
-    @BeforeMethod
+    @BeforeMethod(description = "Setting up client for authorize service")
     public void setUp() {
         this.authorizationService = new AuthorizationService();
     }
 
-    @Test(groups = {"rest", "login-service", "positive"},
+    @Test(
             dataProvider = "valid-creds-provider",
             dataProviderClass = DataProviders.class)
     public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) throws IOException {

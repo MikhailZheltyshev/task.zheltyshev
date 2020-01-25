@@ -2,6 +2,7 @@ package services;
 
 import base.service.ServiceProvider;
 import interfaces.TODO;
+import io.qameta.allure.Step;
 import models.ResponseStatus;
 import models.ToDo;
 import models.ToDoList;
@@ -26,6 +27,7 @@ public class ToDoService {
         this.toDoInterface = ServiceProvider.createService(TODO.class, authToken);
     }
 
+    @Step("Perform request to ToDo service for ToDo list")
     public Response<ResponseBody> requestToDoList() {
         try {
             return toDoInterface.getToDoList().execute();
@@ -34,6 +36,7 @@ public class ToDoService {
         }
     }
 
+    @Step("Perform request to ToDo service to remove task with \"{0}\" id")
     public Response<ResponseStatus> removeTask(int taskId) {
         ToDo task = new ToDo(taskId, null, null);
         try {
@@ -43,6 +46,7 @@ public class ToDoService {
         }
     }
 
+    @Step("Perform request to ToDo service to create task with \"{0}\" description")
     public Response<ResponseStatus> createTask(String taskDescription) {
         ToDo task = new ToDo(null, null, taskDescription);
         try {
@@ -56,6 +60,7 @@ public class ToDoService {
         descriptions.forEach(this::createTask);
     }
 
+    @Step("Collecting all ToDo tasks descriptions")
     public List<String> collectAllTasksDescriptions() {
         ToDoList toDoList = convertResponseBodyToType(requestToDoList().body(), ToDoList.class);
         return toDoList.getTodoList().stream()

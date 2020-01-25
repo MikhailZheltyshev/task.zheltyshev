@@ -3,6 +3,7 @@ package services;
 import base.service.ServiceProvider;
 import helpers.RestHelper;
 import interfaces.Authorization;
+import io.qameta.allure.Step;
 import models.LoginResponseStatus;
 import models.UserCredentials;
 import retrofit2.Response;
@@ -17,12 +18,13 @@ public class AuthorizationService {
         this.authorizationInterface = ServiceProvider.createService(Authorization.class);
     }
 
-    public AuthorizationService(String username, String password) {
-        this.authorizationInterface = ServiceProvider.createService(Authorization.class, username, password);
-    }
-
-    public Response<LoginResponseStatus> loginWithCredentials(UserCredentials credentials) throws IOException {
-        return authorizationInterface.login(credentials).execute();
+    @Step("Perform login request to \"Authorize\" service with \"{0}\" username and \"{1}\" password")
+    public Response<LoginResponseStatus> loginWithCredentials(UserCredentials credentials) {
+        try {
+            return authorizationInterface.login(credentials).execute();
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to perform login request", e);
+        }
     }
 
     public String getAuthToken(UserCredentials credentials) {

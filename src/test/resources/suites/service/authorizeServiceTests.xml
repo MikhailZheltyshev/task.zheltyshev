@@ -1,6 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Authorize service tests" verbose="1">
+    <listeners>
+        <listener class-name="listeners.AllureListener"/>
+    </listeners>
 
     <test name="Authorize service tests">
         <classes>

@@ -1,6 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Main page tests" verbose="1" parallel="classes">
+    <listeners>
+        <listener class-name="listeners.AllureListener"/>
+    </listeners>
 
     <test name="Main page tests">
         <classes>
