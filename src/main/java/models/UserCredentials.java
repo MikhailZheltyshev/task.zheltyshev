@@ -19,7 +19,6 @@ public class UserCredentials {
     }
 
     public UserCredentials(String username, String password) {
-        super();
         this.username = username;
         this.password = password;
     }

@@ -1,7 +1,8 @@
 package rest;
 
 import dataProviders.DataProviders;
-import models.LoginResponse;
+import models.LoginResponseStatus;
+import models.ResponseStatus;
 import models.UserCredentials;
 import okhttp3.Headers;
 import org.testng.annotations.BeforeMethod;
@@ -30,8 +31,8 @@ public class LoginServiceTests {
     @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
     public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
-        LoginResponse loginResponse = authorizationService.loginWithCredentials(credentials).body();
-        assertThat(loginResponse.getStatus())
+        ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
+        assertThat(loginResponseStatus.getStatus())
                 .as("Login response status should be SUCCESS for Login request with valid credentials")
                 .isEqualTo(SUCCESS_STATUS);
     }
@@ -48,8 +49,8 @@ public class LoginServiceTests {
     @Test(dataProvider = "valid-creds-provider", dataProviderClass = DataProviders.class)
     public void checkSessionIdIsReturnedInResponseBodyForLoginRequestWithValidCredentials(String username, String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
-        LoginResponse loginResponse = authorizationService.loginWithCredentials(credentials).body();
-        assertThat(loginResponse.getSessionId())
+        LoginResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
+        assertThat(loginResponseStatus.getSessionId())
                 .as("Login response session id should be returned for Login request with valid credentials")
                 .isNotNull();
     }
@@ -68,8 +69,8 @@ public class LoginServiceTests {
     public void checkLoginResponseHasFailedStatusInBodyForLoginRequestWithInvalidCredentials(String username,
                                                                                              String password) throws IOException {
         UserCredentials credentials = new UserCredentials(username, password);
-        LoginResponse loginResponse = authorizationService.loginWithCredentials(credentials).body();
-        assertThat(loginResponse.getStatus())
+        ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
+        assertThat(loginResponseStatus.getStatus())
                 .as("Login response body status should be FAILED for Login request with invalid credentials")
                 .isEqualTo(FAILED_STATUS);
     }

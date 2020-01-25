@@ -2,7 +2,7 @@ package services;
 
 import base.service.ServiceProvider;
 import interfaces.Authorization;
-import models.LoginResponse;
+import models.LoginResponseStatus;
 import models.UserCredentials;
 import retrofit2.Response;
 
@@ -20,7 +20,7 @@ public class AuthorizationService {
         this.authorizationService = ServiceProvider.createService(Authorization.class, username, password);
     }
 
-    public Response<LoginResponse> loginWithCredentials(UserCredentials credentials) throws IOException {
+    public Response<LoginResponseStatus> loginWithCredentials(UserCredentials credentials) throws IOException {
         return authorizationService.login(credentials).execute();
     }
 }

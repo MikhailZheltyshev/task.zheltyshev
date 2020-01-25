@@ -6,30 +6,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class LoginResponse {
+public class ResponseStatus {
 
-    @SerializedName("sessionId")
-    @Expose
-    private Integer sessionId;
     @SerializedName("status")
     @Expose
-    private String status;
+    protected String status;
 
-    public LoginResponse() {
+    public ResponseStatus() {
     }
 
-    public LoginResponse(Integer sessionId, String status) {
-        super();
-        this.sessionId = sessionId;
+    public ResponseStatus(Integer sessionId, String status) {
         this.status = status;
-    }
-
-    public Integer getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(Integer sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getStatus() {
@@ -43,7 +30,6 @@ public class LoginResponse {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("sessionId", sessionId)
                 .append("status", status)
                 .toString();
     }
@@ -51,7 +37,6 @@ public class LoginResponse {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(sessionId)
                 .append(status)
                 .toHashCode();
     }
@@ -61,12 +46,11 @@ public class LoginResponse {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof LoginResponse)) {
+        if (!(other instanceof ResponseStatus)) {
             return false;
         }
-        LoginResponse rhs = ((LoginResponse) other);
+        ResponseStatus rhs = ((ResponseStatus) other);
         return new EqualsBuilder()
-                .append(sessionId, rhs.sessionId)
                 .append(status, rhs.status)
                 .isEquals();
     }

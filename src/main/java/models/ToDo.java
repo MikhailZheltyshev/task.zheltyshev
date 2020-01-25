@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Todo {
+public class ToDo {
 
     @SerializedName("id")
     @Expose
@@ -18,11 +18,10 @@ public class Todo {
     @Expose
     private String description;
 
-    public Todo() {
+    public ToDo() {
     }
 
-    public Todo(Integer id, Integer personId, String description) {
-        super();
+    public ToDo(Integer id, Integer personId, String description) {
         this.id = id;
         this.personId = personId;
         this.description = description;
@@ -75,10 +74,10 @@ public class Todo {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof Todo)) {
+        if (!(other instanceof ToDo)) {
             return false;
         }
-        Todo rhs = ((Todo) other);
+        ToDo rhs = ((ToDo) other);
         return new EqualsBuilder()
                 .append(description, rhs.description)
                 .append(personId, rhs.personId)
