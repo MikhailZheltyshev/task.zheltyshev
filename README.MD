@@ -1,4 +1,4 @@
-# Automation test task
+# Test automation task
 ## Tools:
 1. Selenium WebDriver
 2. TestNg
