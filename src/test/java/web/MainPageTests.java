@@ -157,7 +157,7 @@ public class MainPageTests extends WebTestBase {
 
     @AfterMethod
     public void cleanUp() {
-        if(mainPage != null) {
+        if (mainPage != null) {
             mainPage.clearTasksList();
         }
         driver.manage().deleteAllCookies();
