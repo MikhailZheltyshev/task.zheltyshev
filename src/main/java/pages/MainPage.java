@@ -81,11 +81,11 @@ public class MainPage extends BasePage {
         taskInputField.sendKeys(taskText);
         addTaskButton.click();
     }
-    
+
     public void addTasks(List<String> tasks) {
-        tasks.forEach(task -> addTask(task));
+        tasks.forEach(this::addTask);
     }
-    
+
     public int getNumberOfTasks() {
         return tasksRows.size();
     }
@@ -105,7 +105,7 @@ public class MainPage extends BasePage {
         if (driver.getCurrentUrl().equals(URL)) {
             final int numberOfTasks = tasksRows.size();
             for (int i = 0; i < numberOfTasks; i++) {
-                WebElement firstTaskRemoveButton = driver.findElement(By.xpath(FIRST_REMOVE_TASK_BUTTON_XPATH));
+                final WebElement firstTaskRemoveButton = driver.findElement(By.xpath(FIRST_REMOVE_TASK_BUTTON_XPATH));
                 firstTaskRemoveButton.click();
                 waitForWebElementInvisibility(firstTaskRemoveButton, driver);
             }
@@ -177,7 +177,7 @@ public class MainPage extends BasePage {
 
     @Step("Check that Add task button has \"{0}\" text")
     public void checkAddTaskButtonHasExpectedLabel(String expectedLabel) {
-        String addTaskButtonOwnText = getWebElementTextExcludingChildren(addTaskButton);
+        final String addTaskButtonOwnText = getWebElementTextExcludingChildren(addTaskButton);
         assertThat(addTaskButtonOwnText)
                 .as("Add task button has", expectedLabel)
                 .isEqualTo(expectedLabel);
@@ -200,12 +200,12 @@ public class MainPage extends BasePage {
 
     @Step("Check that task numeration is correct")
     public void checkTasksNumerationIsCorrect(List<String> expectedTasks) {
-        List<String> actualIndexes = getAllTasksIndexes();
-        List<String> actualDescriptions = getAllTasksDescriptions();
-        Map<String, String> expectedIndexedTasks = IntStream.range(0, expectedTasks.size())
+        final List<String> actualIndexes = getAllTasksIndexes();
+        final List<String> actualDescriptions = getAllTasksDescriptions();
+        final Map<String, String> expectedIndexedTasks = IntStream.range(0, expectedTasks.size())
                 .boxed()
                 .collect(toMap(i -> String.valueOf(i + 1), expectedTasks::get));
-        Map<String, String> actualIndexedTasks = IntStream.range(0, actualDescriptions.size())
+        final Map<String, String> actualIndexedTasks = IntStream.range(0, actualDescriptions.size())
                 .boxed()
                 .collect(toMap(actualIndexes::get, actualDescriptions::get));
         assertThat(actualIndexedTasks)
@@ -215,12 +215,10 @@ public class MainPage extends BasePage {
 
     @Step("Check that each task has remove button")
     public void checkEachTaskHasRemoveButton() {
-        SoftAssertions softAssertions = new SoftAssertions();
-        tasksRows.forEach(row -> {
-            softAssertions.assertThat(row.findElement(By.cssSelector(".icon-button")).isDisplayed())
-                    .as("Remove button should be displayed for {} row", row.getText())
-                    .isTrue();
-        });
+        final SoftAssertions softAssertions = new SoftAssertions();
+        tasksRows.forEach(row -> softAssertions.assertThat(row.findElement(By.cssSelector(".icon-button")).isDisplayed())
+                .as("Remove button should be displayed for {} row", row.getText())
+                .isTrue());
         softAssertions.assertAll();
     }
 }

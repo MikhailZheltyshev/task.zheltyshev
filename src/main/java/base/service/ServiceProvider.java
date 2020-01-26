@@ -5,11 +5,12 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static utils.PropertyReader.getProperty;
+import static utils.PropertyReader.getAppBaseUrl;
+import static utils.PropertyReader.getAppPort;
 
 public class ServiceProvider {
 
-    public static final String API_BASE_URL = String.format("%s:%s", getProperty("app.url"), getProperty("app.port"));
+    public static final String API_BASE_URL = String.format("%s:%s", getAppBaseUrl(), getAppPort());
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

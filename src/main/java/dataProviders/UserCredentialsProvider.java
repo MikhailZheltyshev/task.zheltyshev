@@ -2,7 +2,9 @@ package dataProviders;
 
 import org.testng.annotations.DataProvider;
 
-public class DataProviders {
+import static utils.StringsGenerator.EMPTY;
+
+public class UserCredentialsProvider {
 
     @DataProvider(name = "valid-creds-provider")
     public Object[][] provideValidLoginCredentials() {
@@ -15,9 +17,9 @@ public class DataProviders {
     @DataProvider(name = "invalid-creds-provider")
     public Object[][] provideInvalidLoginCredentials() {
         return new Object[][]{
-                {"", ""},
-                {"", "123456789"},
-                {"john_dow@some.domaine.com", ""},
+                {EMPTY, EMPTY},
+                {EMPTY, "123456789"},
+                {"john_dow@some.domaine.com", EMPTY},
                 {"bla", "bla"}
         };
     }

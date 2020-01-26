@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static utils.PropertyReader.getProperty;
+import static utils.PropertyReader.getPageLoadTimeOutInSeconds;
 
 public class PageUtils {
 
@@ -23,7 +23,7 @@ public class PageUtils {
     }
 
     public static void waitForPageUrlChangedTo(String targetUrl, WebDriver driver) {
-        int timeOut = Integer.parseInt(getProperty("page.load.timeout"));
+        int timeOut = getPageLoadTimeOutInSeconds();
         try {
             Wait<WebDriver> wait = new WebDriverWait(driver, timeOut);
             wait.until(ExpectedConditions.urlToBe(targetUrl));

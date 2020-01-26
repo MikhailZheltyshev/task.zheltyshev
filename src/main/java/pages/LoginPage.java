@@ -30,14 +30,14 @@ public class LoginPage extends BasePage {
 
     @Step("Open Login page")
     public void open() {
-        driver.get(URL);
+        open(URL);
     }
 
     @Step("Perform login with \"{0}\" username and \"{1}\" password")
     public void login(String username, String password) {
         usernameField.clear();
-        usernameField.sendKeys(username);
         passwordField.clear();
+        usernameField.sendKeys(username);
         passwordField.sendKeys(password);
         loginButton.click();
     }

@@ -8,11 +8,31 @@ import java.util.Properties;
 public class PropertyReader {
 
     private static final String DEFAULT_PROPS_FILE = "test.properties";
-    private static final String PROPS_FILE_ENV_VAR = "testProperties";
+    private static final String PROPS_FILE_ENV_VAR = "propsFile";
 
-    public static String getProperty(String propertyKey) {
+    public static String getAppBaseUrl() {
+        return getProperty("app.url");
+    }
+
+    public static String getAppPort() {
+        return getProperty("app.port");
+    }
+
+    public static String getBrowserName() {
+        return getProperty("browser");
+    }
+
+    public static int getImplicitlyWaitTimeOutInSeconds() {
+        return Integer.parseInt(getProperty("implicitly.wait.timeout"));
+    }
+
+    public static int getPageLoadTimeOutInSeconds() {
+        return Integer.parseInt(getProperty("page.load.timeout"));
+    }
+
+    private static String getProperty(String propertyKey) {
         final String propertyValue = loadProperties().getProperty(propertyKey);
-        if (propertyKey == null) {
+        if (propertyValue == null) {
             throw new IllegalStateException(String.format("Property with [%s] key not found", propertyKey));
         }
         return propertyValue;
@@ -24,7 +44,7 @@ public class PropertyReader {
         try (InputStream resourceAsStream = ClassLoader.getSystemResourceAsStream(propertiesFileName)) {
             props.load(resourceAsStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(String.format("Unable to load properties %s from resources", propertiesFileName),e);
         }
         return props;
     }

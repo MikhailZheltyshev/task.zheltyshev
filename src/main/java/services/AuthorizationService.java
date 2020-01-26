@@ -1,13 +1,13 @@
 package services;
 
 import base.service.ServiceProvider;
-import helpers.RestHelper;
 import interfaces.Authorization;
 import io.qameta.allure.Step;
 import models.LoginResponseStatus;
 import models.UserCredentials;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import utils.CookiesUtils;
 
 import java.io.IOException;
 
@@ -42,9 +42,9 @@ public class AuthorizationService {
 
     public String getAuthToken(UserCredentials credentials) {
         try {
-            Response<LoginResponseStatus> loginResponseStatus = authorizationInterface.login(credentials).execute();
-            String setCookieString = loginResponseStatus.headers().get("Set-Cookie");
-            return RestHelper.convertSetCookiesStringToMap(setCookieString).get("Authorization");
+            final Response<LoginResponseStatus> loginResponseStatus = authorizationInterface.login(credentials).execute();
+            final String setCookieString = loginResponseStatus.headers().get("Set-Cookie");
+            return CookiesUtils.convertSetCookiesStringToMap(setCookieString).get("Authorization");
         } catch (IOException e) {
             throw new IllegalStateException("Unable to get auth token with credentials", e);
         }

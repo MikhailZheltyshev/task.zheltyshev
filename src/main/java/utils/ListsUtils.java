@@ -8,13 +8,13 @@ import java.util.stream.Stream;
 public class ListsUtils {
 
     public static <T> List<T> joinLists(List<T>... lists) {
-        List<T> joinedList = new ArrayList<>();
+        final List<T> joinedList = new ArrayList<>();
         Stream.of(lists).forEach(joinedList::addAll);
         return joinedList;
     }
 
     public static <T> T getRandomElementFromList(List<T> list) {
-        int listSize = list.size();
+        final int listSize = list.size();
         if (listSize > 0) {
             return list.get(new Random().nextInt(list.size()));
         } else {

@@ -12,6 +12,7 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static utils.ApiResponseUtils.convertResponseBodyToType;
 
@@ -38,7 +39,7 @@ public class ToDoService {
 
     @Step("Perform request to ToDo service to remove task with \"{0}\" id")
     public Response<ResponseBody> removeTask(int taskId) {
-        ToDo task = new ToDo(taskId, null, null);
+        final ToDo task = new ToDo(taskId, null, null);
         try {
             return toDoInterface.removeTask(task).execute();
         } catch (IOException e) {
@@ -48,7 +49,7 @@ public class ToDoService {
 
     @Step("Perform request to ToDo service to create task with \"{0}\" description")
     public Response<ResponseStatus> createTask(String taskDescription) {
-        ToDo task = new ToDo(null, null, taskDescription);
+        final ToDo task = new ToDo(null, null, taskDescription);
         try {
             return toDoInterface.createTask(task).execute();
         } catch (IOException e) {
@@ -56,13 +57,9 @@ public class ToDoService {
         }
     }
 
-    public void addListOfTasks(List<String> descriptions) {
-        descriptions.forEach(this::createTask);
-    }
-
     @Step("Collecting all ToDo tasks descriptions")
     public List<String> collectAllTasksDescriptions() {
-        ToDoList toDoList = convertResponseBodyToType(requestToDoList().body(), ToDoList.class);
+        final ToDoList toDoList = convertResponseBodyToType(requireNonNull(requestToDoList().body()), ToDoList.class);
         return toDoList.getTodoList().stream()
                 .map(ToDo::getDescription)
                 .collect(toList());
@@ -70,14 +67,18 @@ public class ToDoService {
 
     @Step("Collect all ToDo tasks")
     public ToDoList getToDoList() {
-        return convertResponseBodyToType(requestToDoList().body(), ToDoList.class);
+        return convertResponseBodyToType(requireNonNull(requestToDoList().body()), ToDoList.class);
+    }
+
+    public void addListOfTasks(List<String> descriptions) {
+        descriptions.forEach(this::createTask);
     }
 
     public void removeAllTasks() {
-        ResponseBody body = requestToDoList().body();
-        ToDoList toDoList = convertResponseBodyToType(body, ToDoList.class);
+        final ResponseBody body = requestToDoList().body();
+        final ToDoList toDoList = convertResponseBodyToType(requireNonNull(body), ToDoList.class);
         toDoList.getTodoList().stream()
                 .map(ToDo::getId)
-                .forEach(id -> removeTask(id));
+                .forEach(this::removeTask);
     }
 }

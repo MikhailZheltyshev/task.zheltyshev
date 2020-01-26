@@ -17,6 +17,10 @@
         <allure-maven.version>2.10.0</allure-maven.version>
         <allure-testng.version>2.13.1</allure-testng.version>
         <allure-report.version>2.9.0</allure-report.version>
+        <webdriver-manager.version>3.8.1</webdriver-manager.version>
+        <assertj-core.version>3.14.0</assertj-core.version>
+        <retrofit.version>2.5.0</retrofit.version>
+        <commons-lang.version>3.9</commons-lang.version>
     </properties>
 
     <dependencies>
@@ -35,25 +39,25 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>3.8.1</version>
+            <version>${webdriver-manager.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.14.0</version>
+            <version>${assertj-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
-            <version>2.5.0</version>
+            <version>${retrofit.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>converter-gson</artifactId>
-            <version>2.5.0</version>
+            <version>${retrofit.version}</version>
         </dependency>
 
         <dependency>
@@ -72,19 +76,12 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure-testng.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-assertj</artifactId>
             <version>${allure-testng.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
         </dependency>
 
     </dependencies>
@@ -118,7 +115,6 @@
                         <suiteXmlFile>src/test/resources/suites/service/authorizeServiceTests.xml</suiteXmlFile>
                         <suiteXmlFile>src/test/resources/suites/service/toDoServiceTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <!--Aspectj is needed for Allure tags to work (like @Step)-->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>

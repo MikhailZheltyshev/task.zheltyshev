@@ -1,22 +1,23 @@
 package rest;
 
-import dataProviders.DataProviders;
+import dataProviders.UserCredentialsProvider;
 import models.LoginResponseStatus;
 import models.ResponseStatus;
 import models.UserCredentials;
 import okhttp3.Headers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import retrofit2.Response;
 import services.AuthorizationService;
 
 import java.util.Map;
 
 import static constants.HttpStatusCodes.OK;
 import static constants.HttpStatusCodes.UNAUTHORIZED;
-import static constants.LoginResponseBodyStatuses.FAILED_STATUS;
-import static constants.LoginResponseBodyStatuses.SUCCESS_STATUS;
-import static helpers.RestHelper.convertSetCookiesStringToMap;
+import static constants.ResponseBodyStatuses.FAILED_STATUS;
+import static constants.ResponseBodyStatuses.SUCCESS_STATUS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static utils.CookiesUtils.convertSetCookiesStringToMap;
 
 public class AuthorizeServiceTests {
 
@@ -29,7 +30,7 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that login request with valid credentials to Authorize service returns SUCCESS status in response body",
             dataProvider = "valid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkLoginRequestWithValidCredentialsReturnsSuccessfulStatusInBody(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         ResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
@@ -40,7 +41,7 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that login request with valid credentials to Authorize service returns 200 OK Http status in response",
             dataProvider = "valid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkOkHttpStatusReturnedForLoginRequestWithValidCredentials(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         int loginResponseHttpCode = authorizationService.loginWithCredentials(credentials).code();
@@ -51,7 +52,7 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that session id is returned in response body for request with valid credentials",
             dataProvider = "valid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkSessionIdIsReturnedInResponseBodyForLoginRequestWithValidCredentials(String username, String password) {
         UserCredentials credentials = new UserCredentials(username, password);
         LoginResponseStatus loginResponseStatus = authorizationService.loginWithCredentials(credentials).body();
@@ -62,7 +63,7 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that auth token is returned in response body for request with valid credentials",
             dataProvider = "valid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkAuthorizationTokenReturnedInResponseHeaderForLoginRequestWithValidCredentials(String username,
                                                                                                    String password) {
         UserCredentials credentials = new UserCredentials(username, password);
@@ -75,7 +76,7 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that login request with invalid credentials to Authorize service returns FAILED status in response body",
             dataProvider = "invalid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkLoginResponseHasFailedStatusInBodyForLoginRequestWithInvalidCredentials(String username,
                                                                                              String password) {
         UserCredentials credentials = new UserCredentials(username, password);
@@ -87,19 +88,19 @@ public class AuthorizeServiceTests {
 
     @Test(description = "Check that login request with invalid credentials to Authorize service returns 401 Unauthorized Http status in response",
             dataProvider = "invalid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkUnauthorizedHttpStatusCodeIsReturnedForLoginRequestWithInvalidCredentials(String username,
                                                                                                String password) {
         UserCredentials credentials = new UserCredentials(username, password);
-        int loginResponseHttpCode = authorizationService.loginWithCredentials(credentials).code();
-        assertThat(loginResponseHttpCode)
+        Response<LoginResponseStatus> loginResponse = authorizationService.loginWithCredentials(credentials);
+        assertThat(loginResponse.code())
                 .as("401 UNAUTHORIZED Http status should be returned on attempt to authorize with invalid credentials")
                 .isEqualTo(UNAUTHORIZED);
     }
 
     @Test(description = "Check that auth token is not returned in response body for request with invalid credentials",
             dataProvider = "invalid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkAuthorizationTokenIsNotReturnedInResponseHeaderForLoginRequestWithInvalidCredentials(String username,
                                                                                                           String password) {
         UserCredentials credentials = new UserCredentials(username, password);

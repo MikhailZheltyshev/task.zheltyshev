@@ -15,15 +15,13 @@ import utils.PropertyReader;
 
 import java.util.concurrent.TimeUnit;
 
-import static utils.PropertyReader.getProperty;
-
 public class WebTestBase {
 
     protected WebDriver driver;
 
     @BeforeClass
     public void initDriver() {
-        String browserName = PropertyReader.getProperty("browser");
+        final String browserName = PropertyReader.getBrowserName();
         switch (browserName.toUpperCase()) {
             case "CHROME":
                 ChromeDriverManager.chromedriver().setup();
@@ -45,8 +43,8 @@ public class WebTestBase {
                 throw new IllegalStateException("Desired browser is not supported: " + browserName);
         }
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Integer.parseInt(getProperty("implicitly.wait.timeout")), TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(Integer.parseInt(getProperty("page.load.timeout")), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(PropertyReader.getImplicitlyWaitTimeOutInSeconds(), TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(PropertyReader.getPageLoadTimeOutInSeconds(), TimeUnit.SECONDS);
     }
 
     @AfterClass

@@ -1,7 +1,7 @@
 package web;
 
 import base.web.WebTestBase;
-import dataProviders.DataProviders;
+import dataProviders.UserCredentialsProvider;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import pages.MainPage;
@@ -33,7 +33,7 @@ public class LoginPageTests extends WebTestBase {
 
     @Test(description = "Check that User can log in with valid credentials",
             dataProvider = "valid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkLoginWithValidCredentials(String username, String password) {
         loginPage.open();
         loginPage.login(username, password);
@@ -43,7 +43,7 @@ public class LoginPageTests extends WebTestBase {
 
     @Test(description = "Check that User can't log in with invalid credentials",
             dataProvider = "invalid-creds-provider",
-            dataProviderClass = DataProviders.class)
+            dataProviderClass = UserCredentialsProvider.class)
     public void checkLoginWithInValidCredentials(String username, String password) {
         loginPage.open();
         loginPage.login(username, password);

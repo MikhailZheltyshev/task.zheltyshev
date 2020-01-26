@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static utils.PropertyReader.getProperty;
+import static utils.PropertyReader.getImplicitlyWaitTimeOutInSeconds;
 
 public class WebElementsUtils {
 
@@ -22,7 +22,7 @@ public class WebElementsUtils {
     }
 
     public static void waitForWebElementInvisibility(WebElement element, WebDriver driver) {
-        int timeoutSec = Integer.parseInt(getProperty("implicitly.wait.timeout"));
+        int timeoutSec = getImplicitlyWaitTimeOutInSeconds();
         try {
             Wait<WebDriver> wait = new WebDriverWait(driver, timeoutSec, 500);
             wait.until(ExpectedConditions.invisibilityOf(element));

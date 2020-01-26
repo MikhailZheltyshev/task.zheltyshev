@@ -116,7 +116,7 @@ public class ToDoServiceWithAuthTests {
     }
 
     @Parameters({"username", "password"})
-    @AfterMethod(description = "Clean up tasks after tests")
+    @AfterMethod(description = "Clean up tasks after test")
     public void cleanUp(@Optional("john_dow@some.domaine.com") String username,
                         @Optional("123456789") String password) {
         UserCredentials cred = new UserCredentials(username, password);
