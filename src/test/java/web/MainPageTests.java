@@ -27,20 +27,17 @@ public class MainPageTests extends WebTestBase {
         mainPage = new MainPage(driver);
     }
 
-    @Test(description = "Check that page header panel is displayed on the Main page",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that page header panel is displayed on the Main page")
     public void checkPageHeaderPanelIsDisplayed() {
         mainPage.checkHeaderPanelIsDisplayed();
     }
 
-    @Test(description = "Check that Log Out button on the Main page has expected label",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that Log Out button on the Main page has expected label")
     public void checkLogOutButtonHasExpectedLabel() {
         mainPage.checkLogOutButtonLabelEqualsTo("Выход");
     }
 
-    @Test(description = "Check that Login page is opened after User clicked on the Log Out button on the Main page",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that Login page is opened after User clicked on the Log Out button on the Main page")
     public void checkLoginPageIsOpenedAfterUserClickedLogOutButton() {
         mainPage.checkLogOutButtonIsDisplayed();
         mainPage.clickOnLogOutButton();
@@ -48,50 +45,42 @@ public class MainPageTests extends WebTestBase {
         checkCurrentUrlIsEqualToExpected(LoginPage.URL, driver);
     }
 
-    @Test(description = "Check that task input field is displayed on the Main page",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that task input field is displayed on the Main page")
     public void checkTaskInputFieldIsDisplayed() {
         mainPage.checkTaskInputFieldIsDisplayed();
     }
 
-    @Test(description = "Check that Add task button is displayed on the Main page",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that Add task button is displayed on the Main page")
     public void checkAddTaskButtonIsDisplayed() {
         mainPage.checkAddTaskButtonIsDisplayed();
     }
 
-    @Test(description = "Check that Add task button has expected label",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that Add task button has expected label")
     public void checkAddTaskButtonHasExpectedLabel() {
         mainPage.checkAddTaskButtonHasExpectedLabel("Добавить запись");
     }
 
-    @Test(description = "Check that task input title is displayed",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that task input title is displayed")
     public void checkTaskInputTitleIsDisplayed() {
         mainPage.checkTaskInputTitleIsDisplayed();
     }
 
-    @Test(description = "Check that task input has expected label",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that task input has expected label")
     public void checkTaskInputHasExpectedLabel() {
         mainPage.checkTaskInputTitleEqualsTo("Управление");
     }
 
-    @Test(description = "Check that tasks list title is displayed",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that tasks list title is displayed")
     public void checkTasksListTitleIsDisplayed() {
         mainPage.checkTasksListTitleIsDisplayed();
     }
 
-    @Test(description = "Check that tasks list has expected label",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that tasks list has expected label")
     public void checkTasksListHasExpectedLabel() {
         mainPage.checkTasksListTitleEqualsTo("Список дел");
     }
 
-    @Test(description = "Check that User is able to add tasks to the tasks list",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that User is able to add tasks to the tasks list")
     public void checkTasksCanBeAddedToTheTasksList() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(5, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -100,9 +89,9 @@ public class MainPageTests extends WebTestBase {
     }
 
     @Parameters({"username", "password"})
-    @Test(description = "Check that the User's list of tasks is not get deleted after log out",
-            groups = {"ui", "main-page", "positive"})
-    public void checkListOfTasksRemainsAfterLogOut(String username, String password) {
+    @Test(description = "Check that the User's list of tasks is not get deleted after log out")
+    public void checkListOfTasksRemainsAfterLogOut(@Optional("john_dow@some.domaine.com") String username,
+                                                   @Optional("123456789") String password) {
         List<String> tasksToBeAdded = generateListOfRandomStrings(5, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
         mainPage.addTasks(tasksToBeAdded);
@@ -113,8 +102,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Test(description = "Check that User's list of tasks doesn't get wiped out on page refresh",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that User's list of tasks doesn't get wiped out on page refresh")
     public void checkListOfTasksRemainsAfterPageRefresh() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(5, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -123,8 +111,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Test(description = "Check that list of tasks is correctly numerated",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that list of tasks is correctly numerated")
     public void checkTasksInListAreCorrectlyNumerated() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -132,8 +119,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksNumerationIsCorrect(tasksToBeAdded);
     }
 
-    @Test(description = "Check that user is not able to add empty task to the tasks list",
-            groups = {"ui", "main-page", "negative"})
+    @Test(description = "Check that user is not able to add empty task to the tasks list")
     public void checkUserNotAbleToAddEmptyTaskToTasksList() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(1, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -142,8 +128,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Test(description = "Check that user is not able to add blank task to the tasks list",
-            groups = {"ui", "main-page", "negative"})
+    @Test(description = "Check that user is not able to add blank task to the tasks list")
     public void checkUserNotAbleToAddBlankTaskToTasksList() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(1, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -152,8 +137,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Test(description = "Check that User is not able to have more than 10 tasks simultaneously",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that User is not able to have more than 10 tasks simultaneously")
     public void checkUserCantHaveMoreThanTenTasksSimultaneously() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();
@@ -163,8 +147,7 @@ public class MainPageTests extends WebTestBase {
         mainPage.checkTasksDescriptionsEqualToExpected(tasksToBeAdded);
     }
 
-    @Test(description = "Check that each task row has remove button",
-            groups = {"ui", "main-page", "positive"})
+    @Test(description = "Check that each task row has remove button")
     public void checkEachTaskRowHasRemoveButton() {
         List<String> tasksToBeAdded = generateListOfRandomStrings(10, 15);
         mainPage.checkTaskInputFieldIsDisplayed();

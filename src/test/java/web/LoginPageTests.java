@@ -52,8 +52,7 @@ public class LoginPageTests extends WebTestBase {
     }
 
     @Parameters({"username", "password"})
-    @Test(description = "Check that User can log in again after returning to Login page by browser's back button",
-            groups = {"ui", "login-page", "negative"})
+    @Test(description = "Check that User can log in again after returning to Login page by browser's back button")
     public void checkUserCanLoginAgainAfterReturningBackToLoginPageFromMainPage(@Optional("john_dow@some.domaine.com") String username,
                                                                                 @Optional("123456789") String password) {
         loginPage.open();

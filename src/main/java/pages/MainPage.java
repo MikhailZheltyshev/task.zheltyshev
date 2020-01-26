@@ -19,6 +19,10 @@ public class MainPage extends BasePage {
 
     public static final String URL = baseUrl + "/main";
 
+
+    private static final String REMOVE_TASK_BUTTONS_CSS = ".icon-button.red-icon";
+    private static final String TASK_DESCRIPTION_INPUT_CSS = ".create-form input";
+
     @FindBy(tagName = "header")
     private WebElement header;
 
@@ -31,7 +35,7 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//div[text()='Управление']")
     private WebElement taskInputTitle;
 
-    @FindBy(css = ".create-form input")
+    @FindBy(css = TASK_DESCRIPTION_INPUT_CSS)
     private WebElement taskInputField;
 
     @FindBy(css = ".create-form button")
@@ -45,11 +49,6 @@ public class MainPage extends BasePage {
 
     @FindBy(css = ".todo-index")
     private List<WebElement> tasksIndexes;
-
-    @FindBy(css = ".single-todo .icon-button")
-    private List<WebElement> taskRemoveButtons;
-
-    private static final String FIRST_REMOVE_TASK_BUTTON_XPATH = "//button[@class='icon-button red-icon'][1]";
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -67,18 +66,13 @@ public class MainPage extends BasePage {
 
     @Step("Type \"{0}\" to the ToDo task input field")
     public void sendKeysToTaskInputField(String taskText) {
-        taskInputField.sendKeys(taskText);
-    }
-
-    @Step("Clear the ToDo task input field")
-    public void clearTaskInputField() {
-        taskInputField.clear();
+        driver.findElement(By.cssSelector(TASK_DESCRIPTION_INPUT_CSS)).sendKeys(taskText);
     }
 
     @Step("Add \"{0}\" ToDo task")
     public void addTask(String taskText) {
-        taskInputField.clear();
-        taskInputField.sendKeys(taskText);
+        clearTaskInput();
+        sendKeysToTaskInputField(taskText);
         addTaskButton.click();
     }
 
@@ -88,6 +82,10 @@ public class MainPage extends BasePage {
 
     public int getNumberOfTasks() {
         return tasksRows.size();
+    }
+
+    public void clearTaskInput() {
+        driver.findElement(By.cssSelector(TASK_DESCRIPTION_INPUT_CSS)).clear();
     }
 
     @Step("Get all ToDo tasks descriptions")
@@ -105,7 +103,8 @@ public class MainPage extends BasePage {
         if (driver.getCurrentUrl().equals(URL)) {
             final int numberOfTasks = tasksRows.size();
             for (int i = 0; i < numberOfTasks; i++) {
-                final WebElement firstTaskRemoveButton = driver.findElement(By.xpath(FIRST_REMOVE_TASK_BUTTON_XPATH));
+                final List<WebElement> removeButtons = driver.findElements(By.cssSelector(REMOVE_TASK_BUTTONS_CSS));
+                final WebElement firstTaskRemoveButton = removeButtons.get(0);
                 firstTaskRemoveButton.click();
                 waitForWebElementInvisibility(firstTaskRemoveButton, driver);
             }
@@ -216,7 +215,7 @@ public class MainPage extends BasePage {
     @Step("Check that each task has remove button")
     public void checkEachTaskHasRemoveButton() {
         final SoftAssertions softAssertions = new SoftAssertions();
-        tasksRows.forEach(row -> softAssertions.assertThat(row.findElement(By.cssSelector(".icon-button")).isDisplayed())
+        tasksRows.forEach(row -> softAssertions.assertThat(row.findElement(By.cssSelector(REMOVE_TASK_BUTTONS_CSS)).isDisplayed())
                 .as("Remove button should be displayed for {} row", row.getText())
                 .isTrue());
         softAssertions.assertAll();
