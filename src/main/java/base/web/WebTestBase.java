@@ -19,7 +19,7 @@ public class WebTestBase {
 
     protected WebDriver driver;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void initDriver() {
         final String browserName = PropertyReader.getBrowserName();
         switch (browserName.toUpperCase()) {
@@ -36,6 +36,7 @@ public class WebTestBase {
                 driver = new InternetExplorerDriver();
                 break;
             case "EDGE":
+                //To use Edge browser driver, MicrosoftWebDriver.exe should be pre-installed
                 EdgeDriverManager.edgedriver().setup();
                 driver = new EdgeDriver();
                 break;
@@ -47,9 +48,10 @@ public class WebTestBase {
         driver.manage().timeouts().pageLoadTimeout(PropertyReader.getPageLoadTimeOutInSeconds(), TimeUnit.SECONDS);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void tearDown() {
         if (driver != null) {
+            driver.close();
             driver.quit();
         }
     }

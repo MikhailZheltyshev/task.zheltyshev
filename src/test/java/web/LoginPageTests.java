@@ -66,7 +66,7 @@ public class LoginPageTests extends WebTestBase {
         checkCurrentUrlIsEqualToExpected(MainPage.URL, driver);
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void cleanUp() {
         driver.manage().deleteAllCookies();
     }

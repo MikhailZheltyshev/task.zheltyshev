@@ -13,7 +13,7 @@ public class ToDoServiceWithoutAuthTests {
 
     private ToDoService toDoService;
 
-    @Test(description = "Check that 401 Unauthorized status code is returned on attempt to request ToDo list without auth token")
+    @Test(description = "Check that 401 Unauthorized status code is returned on attempt to request ToDo list without auth token", alwaysRun = true)
     public void checkRequestForToDoListWithoutAuthTokenReturnsNotAuthorizedHttpStatusCode() {
         toDoService = new ToDoService();
         Response<ResponseBody> toDoListResponse = toDoService.requestToDoList();
