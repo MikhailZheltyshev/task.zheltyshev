@@ -1,5 +1,5 @@
 # Automation test task
-Tools:
+## Tools:
 1. Selenium WebDriver
 2. TestNg
 3. Allure2
