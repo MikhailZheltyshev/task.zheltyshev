@@ -24,9 +24,9 @@ It is also possible to set another properties file (should be located in src/mai
 mvn -DpropsFile=<fileName>.properties clean test
 ```
 
-[/src/test/java/rest](/src/test/java/rest) - api test classes location;
+[/src/test/java/rest](/src/test/java/rest) - api test classes location.
 
-[/src/test/java/web](/src/test/java/web) - ui test classes location;
+[/src/test/java/web](/src/test/java/web) - ui test classes location.
 
 [/src/test/resources](/src/test/resources) - TestNg xml suite files location.
 
