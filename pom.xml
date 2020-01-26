@@ -9,10 +9,12 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <selenium-java.version>3.141.59</selenium-java.version>
         <testng.version>6.14.3</testng.version>
-        <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <aspectj.version>1.8.10</aspectj.version>
         <allure-maven.version>2.10.0</allure-maven.version>
         <allure-testng.version>2.13.1</allure-testng.version>
@@ -109,12 +111,6 @@
                         </property>
                     </systemProperties>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/suites/web/loginPageTests.xml</suiteXmlFile>
-                        <suiteXmlFile>src/test/resources/suites/web/mainPageTests.xml</suiteXmlFile>
-                        <suiteXmlFile>src/test/resources/suites/service/authorizeServiceTests.xml</suiteXmlFile>
-                        <suiteXmlFile>src/test/resources/suites/service/toDoServiceTests.xml</suiteXmlFile>
-                    </suiteXmlFiles>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>

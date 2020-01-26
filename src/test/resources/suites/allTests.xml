@@ -1,0 +1,53 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="All tests" parallel="classes">
+    <listeners>
+        <listener class-name="listeners.AllureListener"/>
+    </listeners>
+
+    <test name="Login page tests">
+        <classes>
+            <class name="web.LoginPageTests">
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Main page tests">
+        <classes>
+            <class name="web.MainPageTests">
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Authorize service tests">
+        <classes>
+            <class name="rest.AuthorizeServiceTests">
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+    <test name="ToDo service tests with authorized access">
+        <classes>
+            <class name="rest.ToDoServiceWithAuthTests">
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+    <test name="ToDo service tests without authorized access">
+        <classes>
+            <class name="rest.ToDoServiceWithoutAuthTests">
+                <parameter name="username" value="john_dow@some.domaine.com"/>
+                <parameter name="password" value="123456789"/>
+            </class>
+        </classes>
+    </test>
+
+</suite>
